@@ -1,0 +1,142 @@
+# Horary Astrology Engine Configuration
+# All timing, orbs, and confidence values for traditional horary judgment
+
+timing:
+  # Timing calculation parameters
+  default_moon_speed_fallback: 13.0  # degrees per day (only if ephemeris fails)
+  timing_precision_days: 0.1  # minimum timing increment
+  max_future_days: 365  # maximum days to look ahead for aspects/stations
+  
+  # Planetary motion thresholds
+  stationary_speed_threshold: 0.01  # degrees/day to consider stationary
+  slow_moon_threshold: 11.0  # degrees/day (Moon considered slow)
+  fast_moon_threshold: 15.0  # degrees/day (Moon considered fast)
+
+orbs:
+  # Traditional aspect orbs (degrees)
+  conjunction: 8.0
+  sextile: 6.0
+  square: 8.0
+  trine: 8.0
+  opposition: 8.0
+  
+  # Luminary orb bonuses
+  sun_orb_bonus: 1.0
+  moon_orb_bonus: 1.0
+  
+  # Solar condition orbs
+  cazimi_orb_arcmin: 17  # arcminutes
+  combustion_orb: 8.5    # degrees
+  under_beams_orb: 15.0  # degrees
+  
+  # Void-of-course orbs by method
+  void_orb_deg: 1.0  # for "by_orb" method
+
+moon:
+  # Moon testimony and accidental dignity modifiers
+  phase_bonus:
+    new_moon: -2      # 0-30° from Sun
+    waxing_crescent: 1 # 30-60° from Sun  
+    first_quarter: 2  # 60-120° from Sun
+    waxing_gibbous: 3 # 120-150° from Sun
+    full_moon: 4      # 150-210° from Sun
+    waning_gibbous: 2 # 210-240° from Sun
+    last_quarter: 0   # 240-300° from Sun
+    waning_crescent: -1 # 300-360° from Sun
+  
+  speed_bonus:
+    very_slow: -2     # < 11°/day
+    slow: -1         # 11-12°/day
+    average: 0       # 12-14°/day  
+    fast: 1          # 14-15°/day
+    very_fast: 2     # > 15°/day
+  
+  angularity_bonus:
+    angular: 2       # Houses 1, 4, 7, 10
+    succedent: 0     # Houses 2, 5, 8, 11
+    cadent: -1       # Houses 3, 6, 9, 12
+  
+  # Void-of-course configuration
+  void_rule: "by_sign"  # "by_sign", "by_orb", "lilly"
+  void_exceptions:
+    cancer: true     # Moon in Cancer not void even without aspects
+    sagittarius: true # Moon in Sagittarius not void (traditional joy)
+    taurus: false    # Moon in Taurus (exaltation) - configurable
+  
+  # Translation and collection requirements
+  translation:
+    require_speed_advantage: false  # Remove speed prerequisite
+    require_proper_sequence: true   # Must separate then apply
+    require_reception: false        # Reception not mandatory
+  
+  collection:
+    require_collector_dignity: true # Collector should be dignified
+    minimum_dignity_score: 0       # Minimum dignity for valid collection
+
+confidence:
+  # Base confidence levels
+  base_confidence: 100
+  
+  # Perfection confidence by type
+  perfection:
+    direct_with_mutual_rulership: 95
+    direct_with_mutual_exaltation: 85
+    direct_basic: 80
+    translation_of_light: 75
+    collection_of_light: 70
+    reception_only: 65
+  
+  # Denial confidence levels  
+  denial:
+    prohibition: 85
+    frustration_retrograde: 75    # configurable instead of automatic NO
+    refranation: 80
+    abscission: 70
+  
+  # Lunar testimony confidence caps
+  lunar_confidence_caps:
+    favorable: 80
+    unfavorable: 85
+    neutral: 50
+  
+  # Solar condition modifiers
+  solar:
+    cazimi_bonus: 15
+    exact_cazimi_bonus: 20
+    combustion_penalty: 10
+    under_beams_penalty: 5
+  
+  # Reception confidence modifiers
+  reception:
+    mutual_rulership_bonus: 15
+    mutual_exaltation_bonus: 10  # configurable boost
+    mixed_reception_bonus: 5
+
+radicality:
+  # Radicality checking parameters
+  asc_too_early: 3.0    # degrees
+  asc_too_late: 27.0    # degrees
+  saturn_7th_enabled: true  # check Saturn in 7th
+  via_combusta_enabled: true # check Moon in Via Combusta
+  
+  via_combusta:
+    libra_start: 15.0    # degrees into Libra
+    scorpio_full: true   # entire sign of Scorpio
+    capricorn_start: 15.0 # degrees into Capricorn
+
+# Dignity scoring weights
+dignity:
+  rulership: 5
+  exaltation: 4
+  detriment: -5
+  fall: -4
+  joy: 2
+  angular: 1
+  succedent: 0
+  cadent: -1
+
+# Retrograde handling
+retrograde:
+  automatic_denial: false  # Don't automatically deny for retrograde
+  dignity_penalty: -2     # Penalty for retrograde significator
+  frustration_penalty: -5 # Additional penalty for retrograde frustration
