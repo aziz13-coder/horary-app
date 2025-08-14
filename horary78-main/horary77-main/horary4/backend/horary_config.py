@@ -174,10 +174,4 @@ if os.environ.get('HORARY_CONFIG_SKIP_VALIDATION') != 'true':
         get_config().validate_required_keys()
     except HoraryError as e:
         logger.error(f"Configuration validation failed: {e}")
-        # Don't raise here to allow module import - let individual functions handle missing config# -*- coding: utf-8 -*-
-"""
-Spyder Editor
-
-This is a temporary script file.
-"""
-
+        # Don't raise here to allow module import - let individual functions handle missing config
