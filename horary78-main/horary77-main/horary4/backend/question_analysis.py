@@ -59,7 +59,7 @@ class TraditionalHoraryQuestionAnalyzer:
         question_type = self._determine_question_type(question_lower)
         
         # Determine primary houses involved
-        houses = self._determine_houses(question_lower, question_type)
+        houses = self._determine_houses(question, question_type)
         
         # Determine significators
         significators = self._determine_significators(houses, question_type)
@@ -81,13 +81,13 @@ class TraditionalHoraryQuestionAnalyzer:
     def _determine_houses(self, question: str, question_type: str) -> List[int]:
         """Determine which houses are involved in the question"""
         from typing import List, Set, Optional
-        
+        question_lower = question.lower()
         houses: List[int] = [1]  # 1st house = querent
         
         # ------------- detect named person -------------
         subject_house: Optional[int] = None
         for h, kws in self.person_keywords.items():
-            if any(k in question.lower() for k in kws):
+            if any(k in question_lower for k in kws):
                 subject_house = h
                 break
         
@@ -96,11 +96,10 @@ class TraditionalHoraryQuestionAnalyzer:
         illness_words = ["sick", "illness", "disease", "recover"]
         
         if subject_house is not None:
-            q_lower = question.lower()
-            if any(w in q_lower for w in death_words):
+            if any(w in question_lower for w in death_words):
                 houses.append(self._turn(subject_house, 8))  # 8th from subject
                 houses.append(subject_house)
-            elif any(w in q_lower for w in illness_words):
+            elif any(w in question_lower for w in illness_words):
                 houses.append(self._turn(subject_house, 6))  # 6th from subject
                 houses.append(subject_house)
             else:
@@ -109,12 +108,12 @@ class TraditionalHoraryQuestionAnalyzer:
             # ✱ Unchanged fallback branch ✱
             if question_type == "lost_object":
                 houses.append(2)  # Moveable possessions
-            elif question_type == "marriage" or "spouse" in question:
+            elif question_type == "marriage" or "spouse" in question_lower:
                 houses.append(7)  # Marriage/spouse
-            elif question_type == "pregnancy" or "child" in question:
+            elif question_type == "pregnancy" or "child" in question_lower:
                 houses.append(5)  # Children
             elif question_type == "travel":
-                if any(word in question for word in ["far", "foreign", "abroad"]):
+                if any(word in question_lower for word in ["far", "foreign", "abroad"]):
                     houses.append(9)  # Long journeys
                 else:
                     houses.append(3)  # Short journeys
@@ -129,10 +128,10 @@ class TraditionalHoraryQuestionAnalyzer:
             else:
                 # Default to 7th house for "others" or general questions
                 houses.append(7)
-            
+
             # Look for specific house keywords
             for house, keywords in self.house_meanings.items():
-                if house not in houses and any(keyword in question for keyword in keywords):
+                if house not in houses and any(keyword in question_lower for keyword in keywords):
                     houses.append(house)
         
         # ------------- de-duplicate while preserving order -------------
