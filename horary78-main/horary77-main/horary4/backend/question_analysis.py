@@ -31,7 +31,7 @@ class TraditionalHoraryQuestionAnalyzer:
             "travel": ["journey", "travel", "trip", "go to", "visit"],
             "money": ["money", "wealth", "rich", "profit", "gain", "debt"],
             "career": ["job", "career", "work", "employment", "business"],
-            "health": ["sick", "illness", "disease", "health", "recover", "die"],
+            "health": ["sick", "ill", "illness", "disease", "health", "recover", "die"],
             "lawsuit": ["court", "lawsuit", "legal", "judge", "trial"],
             "relationship": ["love", "relationship", "friend", "enemy"]
         }
@@ -93,14 +93,15 @@ class TraditionalHoraryQuestionAnalyzer:
         
         # ------------- detect key themes ---------------
         death_words = ["die", "death", "pass away", "funeral"]
-        illness_words = ["sick", "illness", "disease", "recover"]
+        illness_words = ["sick", "ill", "illness", "disease", "recover"]
         
         if subject_house is not None:
             if any(w in question_lower for w in death_words):
                 houses.append(self._turn(subject_house, 8))  # 8th from subject
                 houses.append(subject_house)
             elif any(w in question_lower for w in illness_words):
-                houses.append(self._turn(subject_house, 6))  # 6th from subject
+                # Illness of a known person: 6th house of illness and the person's house
+                houses.append(6)
                 houses.append(subject_house)
             else:
                 houses.append(subject_house)
