@@ -42,7 +42,9 @@ from collections import defaultdict
 
 # UPDATED IMPORT: Use the new enhanced engine
 
-from horary_engine import HoraryEngine, LocationError, serialize_planet_with_solar
+from judgment_engine import HoraryEngine
+from _horary_math import LocationError
+from serialization import serialize_planet_with_solar
 
 
 
@@ -446,7 +448,7 @@ def get_timezone():
 
             # Get timezone using enhanced timezone manager
 
-            from horary_engine import TimezoneManager
+            from judgment_engine import TimezoneManager
 
             timezone_manager = TimezoneManager()
 
@@ -574,7 +576,7 @@ def get_current_time():
 
             # Get current time using enhanced timezone manager
 
-            from horary_engine import TimezoneManager
+            from judgment_engine import TimezoneManager
 
             timezone_manager = TimezoneManager()
 
